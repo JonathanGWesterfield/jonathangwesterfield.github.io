@@ -1,0 +1,59 @@
+url: ""
+baseurl: /jonathangwesterfield.github.io
+
+# Site settings
+title: Jonathan Westerfield
+email: jgwesterfield@gmail.com.com
+description: "I'm Jonathan Westerfield. I am a developer who strives for innovative solutions everyday. I am a programmer who enjoys leading teams and taking projects from concepts to final products."
+
+
+# # Team names, titles and social links
+# people:
+# - name: Kay Garland
+#   pic: 1
+#   position: Lead Designer
+#   social:
+#     - title: twitter
+#       url: #
+#     - title: facebook
+#       url: #
+#     - title: stack-overflow
+#       url: #
+
+# - name: Jonathan Westerfield
+#   pic: 2
+#   position: Lead Marketer
+#   social:
+#     - title: twitter
+#       url: #
+#     - title: facebook
+#       url: #
+#     - title: linkedin
+#       url: #
+
+# - name: Diana Petersen
+#   pic: 3
+#   position: Lead Developer
+#   social:
+#     - title: twitter
+#       url: #
+#     - title: facebook
+#       url: #
+#     - title: google-plus
+#       url: #
+
+# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
+social:
+  - title: linkedin
+    url: http://www.linkedin.com/in/jonathangwesterfield
+  - title: github
+    url: https://github.com/JonathanGWesterfield
+
+# Postal address (add as many lines as necessary)
+address:
+  - line: 9418 Stone Porch Ln
+  - line: Houston, TX 77064
+
+# Build settings
+markdown: kramdown
+permalink: pretty
