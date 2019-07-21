@@ -1,6 +1,6 @@
 ---
 title: TAMU Professor Grade Analyzer
-subtitle: A Better Way to Registor For Classes
+subtitle: A Better Way to Register For Classes
 layout: default
 modal-id: 3
 date: 2017-07-16
