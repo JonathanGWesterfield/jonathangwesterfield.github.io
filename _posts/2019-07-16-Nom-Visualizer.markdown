@@ -4,7 +4,7 @@ subtitle: A Data Visualization Tool
 layout: default
 modal-id: 2
 date: 2019-06-29
-img: dreams.png
+img: graph.png
 thumbnail: KM-Bolt.png
 alt: image-alt
 project-date: June 2019
