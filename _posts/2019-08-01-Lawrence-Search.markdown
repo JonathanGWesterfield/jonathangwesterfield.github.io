@@ -4,7 +4,7 @@ subtitle: An Email Search Engine
 layout: default
 modal-id: 1
 date: 2019-07-10
-img: dreams.png
+img: Lawrence.PNG
 thumbnail: Lawrence-logo.png
 alt: image-alt
 project-date: July 2019
