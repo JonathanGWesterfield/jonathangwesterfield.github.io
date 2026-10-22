@@ -1,0 +1,23 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Contact — portfolio foundation"
+  description="Contact-route structure for Jonathan Westerfield's professional portfolio."
+>
+  <SiteHeader slot="header" currentPath="/contact/" />
+  <section class="page-intro">
+    <div class="container narrow">
+      <p class="eyebrow">Contact</p>
+      <h1>Public contact routes are under review.</h1>
+      <p class="lede">
+        The final portfolio will provide approved, low-friction contact methods without
+        a third-party form, stored visitor data, or unreviewed personal information.
+      </p>
+    </div>
+  </section>
+  <SiteFooter slot="footer" />
+</BaseLayout>

@@ -1,0 +1,80 @@
+name: Validate and deploy portfolio
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      release_ready: ${{ steps.release-status.outputs.ready }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Check types and content schemas
+        run: npm run check
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Check whether content has met the release gate
+        id: release-status
+        run: echo "ready=$(npm run --silent release:status)" >> "$GITHUB_OUTPUT"
+
+  build-pages-artifact:
+    needs: validate
+    if: github.ref == 'refs/heads/master' && needs.validate.outputs.release_ready == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Build and upload Pages artifact
+        uses: withastro/action@v6
+        with:
+          node-version: 24
+          package-manager: npm
+          build-cmd: npm run build
+
+  deploy:
+    needs: build-pages-artifact
+    if: needs.build-pages-artifact.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

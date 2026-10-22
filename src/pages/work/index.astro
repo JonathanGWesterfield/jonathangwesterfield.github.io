@@ -1,0 +1,23 @@
+---
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Work — portfolio foundation"
+  description="Case-study structure for Jonathan Westerfield's professional portfolio."
+>
+  <SiteHeader slot="header" currentPath="/work/" />
+  <section class="page-intro">
+    <div class="container narrow">
+      <p class="eyebrow">Selected work</p>
+      <h1>Case studies will be published after review.</h1>
+      <p class="lede">
+        Each case study will explain context, responsibility, constraints, decisions,
+        and approved outcomes without exposing confidential implementation details.
+      </p>
+    </div>
+  </section>
+  <SiteFooter slot="footer" />
+</BaseLayout>

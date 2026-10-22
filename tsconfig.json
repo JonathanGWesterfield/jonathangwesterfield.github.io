@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "exclude": [
+    "_data",
+    "_includes",
+    "_layouts",
+    "_posts",
+    "css",
+    "img",
+    "js",
+    "mail",
+    "dist",
+    "node_modules"
+  ]
+}

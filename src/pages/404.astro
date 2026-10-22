@@ -1,0 +1,26 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found — portfolio foundation"
+  description="Page not found."
+  noIndex={true}
+>
+  <SiteHeader slot="header" currentPath="" />
+  <section class="page-intro">
+    <div class="container narrow">
+      <p class="eyebrow">404</p>
+      <h1>This page is not here.</h1>
+      <p class="lede">
+        Return to the portfolio foundation and choose a section from the navigation.
+      </p>
+      <a class="button button-primary" href="/">
+        Return home
+      </a>
+    </div>
+  </section>
+  <SiteFooter slot="footer" />
+</BaseLayout>

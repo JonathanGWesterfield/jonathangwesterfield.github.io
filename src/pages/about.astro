@@ -1,0 +1,23 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="About — portfolio foundation"
+  description="Professional profile structure for Jonathan Westerfield's portfolio."
+>
+  <SiteHeader slot="header" currentPath="/about/" />
+  <section class="page-intro">
+    <div class="container narrow">
+      <p class="eyebrow">About</p>
+      <h1>A concise professional narrative is under review.</h1>
+      <p class="lede">
+        The final page will use one approved role statement and links that match the
+        public résumé, LinkedIn profile, and GitHub profile.
+      </p>
+    </div>
+  </section>
+  <SiteFooter slot="footer" />
+</BaseLayout>
