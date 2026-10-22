@@ -1,23 +1,62 @@
 ---
+import PageIntro from "../components/PageIntro.astro";
+import PublicLinks from "../components/PublicLinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import StatusPanel from "../components/StatusPanel.astro";
+import release from "../data/release.json";
+import { getSiteProfile } from "../lib/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const profile = await getSiteProfile();
+const isPublic =
+  release.status === "public" && profile.data.approvalStatus === "approved";
+const contactLinks =
+  profile.data.approvalStatus === "approved"
+    ? profile.data.publicLinks.filter((link) => link.kind === "contact")
+    : [];
 ---
 
 <BaseLayout
-  title="Contact — portfolio foundation"
-  description="Contact-route structure for Jonathan Westerfield's professional portfolio."
+  title={isPublic ? "Contact" : "Contact — portfolio foundation"}
+  description={
+    isPublic
+      ? (profile.data.contactIntroduction ?? profile.data.description)
+      : "Contact-route structure for Jonathan Westerfield's professional portfolio."
+  }
 >
   <SiteHeader slot="header" currentPath="/contact/" />
-  <section class="page-intro">
-    <div class="container narrow">
-      <p class="eyebrow">Contact</p>
-      <h1>Public contact routes are under review.</h1>
-      <p class="lede">
-        The final portfolio will provide approved, low-friction contact methods without
-        a third-party form, stored visitor data, or unreviewed personal information.
-      </p>
-    </div>
-  </section>
+  {isPublic ? (
+    <>
+      <PageIntro
+        eyebrow="Contact"
+        title="Contact"
+        lede={profile.data.contactIntroduction ?? profile.data.description}
+      />
+      <section class="section">
+        <div class="container narrow">
+          <PublicLinks links={contactLinks} heading="Contact routes" />
+        </div>
+      </section>
+    </>
+  ) : (
+    <>
+      <PageIntro
+        eyebrow="Contact"
+        title="Public contact routes are under review."
+        lede="The final portfolio will provide approved, low-friction contact methods without a third-party form, stored visitor data, or unreviewed personal information."
+      />
+      <section class="section">
+        <div class="container narrow">
+          <StatusPanel heading="No contact form is planned.">
+            <p>
+              Once approved, this page will provide direct public routes without
+              collecting visitor data or requiring a server-side service.
+            </p>
+          </StatusPanel>
+        </div>
+      </section>
+    </>
+  )}
   <SiteFooter slot="footer" />
 </BaseLayout>

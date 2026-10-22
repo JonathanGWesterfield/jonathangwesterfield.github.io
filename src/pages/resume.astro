@@ -1,23 +1,63 @@
 ---
+import ActionLink from "../components/ActionLink.astro";
+import PageIntro from "../components/PageIntro.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import StatusPanel from "../components/StatusPanel.astro";
+import release from "../data/release.json";
+import { getSiteProfile } from "../lib/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const profile = await getSiteProfile();
+const isPublic =
+  release.status === "public" && profile.data.approvalStatus === "approved";
+const resumeFile =
+  profile.data.approvalStatus === "approved" ? profile.data.resumeFile : undefined;
 ---
 
 <BaseLayout
-  title="Résumé — portfolio foundation"
-  description="Résumé structure for Jonathan Westerfield's professional portfolio."
+  title={isPublic ? "Résumé" : "Résumé — portfolio foundation"}
+  description={
+    isPublic
+      ? (profile.data.resumeSummary ?? profile.data.description)
+      : "Résumé structure for Jonathan Westerfield's professional portfolio."
+  }
 >
   <SiteHeader slot="header" currentPath="/resume/" />
-  <section class="page-intro">
-    <div class="container narrow">
-      <p class="eyebrow">Résumé</p>
-      <h1>The approved public résumé will be added in the content phase.</h1>
-      <p class="lede">
-        This route will include an accessible HTML summary alongside a reviewed,
-        downloadable PDF. No tailored application materials will be published here.
-      </p>
-    </div>
-  </section>
+  {isPublic ? (
+    <>
+      <PageIntro
+        eyebrow="Résumé"
+        title="Résumé"
+        lede={profile.data.resumeSummary ?? profile.data.description}
+      />
+      <section class="section">
+        <div class="container narrow">
+          {resumeFile && (
+            <ActionLink href={resumeFile}>Download résumé (PDF)</ActionLink>
+          )}
+        </div>
+      </section>
+    </>
+  ) : (
+    <>
+      <PageIntro
+        eyebrow="Résumé"
+        title="The approved public résumé will be added in the content phase."
+        lede="This route will include an accessible HTML summary alongside a reviewed, downloadable PDF. No tailored application materials will be published here."
+      />
+      <section class="section">
+        <div class="container narrow">
+          <StatusPanel heading="The résumé route is designed for both scanning and detail.">
+            <p>
+              The final version will preserve the same current information in readable
+              HTML and in a downloadable PDF, so it works for quick review, search, and
+              assistive technology.
+            </p>
+          </StatusPanel>
+        </div>
+      </section>
+    </>
+  )}
   <SiteFooter slot="footer" />
 </BaseLayout>

@@ -3,6 +3,11 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const approvalStatus = z.enum(["draft", "approved"]);
+const publicLink = z.object({
+  label: z.string(),
+  url: z.url(),
+  kind: z.enum(["github", "linkedin", "contact", "other"]),
+});
 
 const site = defineCollection({
   loader: glob({
@@ -13,6 +18,11 @@ const site = defineCollection({
     name: z.string(),
     professionalTitle: z.string(),
     description: z.string(),
+    about: z.string().optional(),
+    resumeSummary: z.string().optional(),
+    contactIntroduction: z.string().optional(),
+    publicLinks: z.array(publicLink).default([]),
+    resumeFile: z.string().optional(),
     approvalStatus,
     lastReviewed: z.coerce.date(),
   }),
@@ -29,7 +39,10 @@ const work = defineCollection({
     role: z.string(),
     timeframe: z.string(),
     situation: z.string(),
+    responsibility: z.string(),
     constraints: z.array(z.string()),
+    approach: z.string(),
+    outcome: z.string(),
     technologies: z.array(z.string()),
     featured: z.boolean().default(false),
     order: z.number().int().positive(),
@@ -41,10 +54,17 @@ const work = defineCollection({
         }),
       )
       .default([]),
-    heroImage: z.string().optional(),
-    imageAlt: z.string().optional(),
+    heroImage: z
+      .object({
+        src: z.string().startsWith("/images/"),
+        alt: z.string().min(1),
+        width: z.number().int().positive(),
+        height: z.number().int().positive(),
+      })
+      .optional(),
     approvalStatus,
     confidentialityReview: z.boolean(),
+    relevance: z.string(),
     lastReviewed: z.coerce.date(),
   }),
 });

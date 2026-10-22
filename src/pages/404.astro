@@ -1,26 +1,19 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import ActionLink from "../components/ActionLink.astro";
+import PageIntro from "../components/PageIntro.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout
-  title="Page not found — portfolio foundation"
-  description="Page not found."
-  noIndex={true}
->
+<BaseLayout title="Page not found" description="Page not found." noIndex={true}>
   <SiteHeader slot="header" currentPath="" />
-  <section class="page-intro">
-    <div class="container narrow">
-      <p class="eyebrow">404</p>
-      <h1>This page is not here.</h1>
-      <p class="lede">
-        Return to the portfolio foundation and choose a section from the navigation.
-      </p>
-      <a class="button button-primary" href="/">
-        Return home
-      </a>
-    </div>
-  </section>
+  <PageIntro
+    eyebrow="404"
+    title="This page is not here."
+    lede="Return to the homepage and choose a section from the navigation."
+  >
+    <ActionLink href="/">Return home</ActionLink>
+  </PageIntro>
   <SiteFooter slot="footer" />
 </BaseLayout>

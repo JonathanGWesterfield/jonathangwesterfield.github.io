@@ -1,0 +1,15 @@
+---
+interface Props {
+  heading: string;
+}
+
+const { heading } = Astro.props;
+---
+
+<aside class="status-panel" aria-label={heading}>
+  <p class="eyebrow">Content status</p>
+  <h2>{heading}</h2>
+  <div class="status-panel-copy">
+    <slot />
+  </div>
+</aside>

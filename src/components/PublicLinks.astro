@@ -1,0 +1,26 @@
+---
+interface PublicLink {
+  label: string;
+  url: string;
+  kind: "github" | "linkedin" | "contact" | "other";
+}
+
+interface Props {
+  links: PublicLink[];
+  heading?: string;
+}
+
+const { links, heading = "Public links" } = Astro.props;
+---
+
+{links.length > 0 && (
+  <nav class="public-links" aria-label={heading}>
+    <ul>
+      {links.map((link) => (
+        <li>
+          <a href={link.url}>{link.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}

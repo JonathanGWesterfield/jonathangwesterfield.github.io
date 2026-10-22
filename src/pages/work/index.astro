@@ -1,22 +1,46 @@
 ---
+import { getCollection } from "astro:content";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
+import PageIntro from "../../components/PageIntro.astro";
+import StatusPanel from "../../components/StatusPanel.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import release from "../../data/release.json";
+import { isPublicWork } from "../../lib/work";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const work = (await getCollection("work"))
+  .filter(isPublicWork)
+  .sort((first, second) => first.data.order - second.data.order);
+const isPublic = release.status === "public";
 ---
 
 <BaseLayout
-  title="Work — portfolio foundation"
+  title={isPublic ? "Work" : "Work — portfolio foundation"}
   description="Case-study structure for Jonathan Westerfield's professional portfolio."
 >
   <SiteHeader slot="header" currentPath="/work/" />
-  <section class="page-intro">
-    <div class="container narrow">
-      <p class="eyebrow">Selected work</p>
-      <h1>Case studies will be published after review.</h1>
-      <p class="lede">
-        Each case study will explain context, responsibility, constraints, decisions,
-        and approved outcomes without exposing confidential implementation details.
-      </p>
+  <PageIntro
+    eyebrow="Selected work"
+    title="Case studies that show how the work was done."
+    lede="Each study will explain context, responsibility, constraints, technical decisions, and approved outcomes without exposing confidential implementation details."
+  />
+  <section class="section">
+    <div class="container">
+      {work.length > 0 ? (
+        <div class="work-grid">
+          {work.map((entry) => (
+            <WorkCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <StatusPanel heading="No case studies are public yet.">
+          <p>
+            This route is ready for reviewed work, but it will stay intentionally empty
+            until at least one story is accurate, approved, and safe to share.
+          </p>
+        </StatusPanel>
+      )}
     </div>
   </section>
   <SiteFooter slot="footer" />

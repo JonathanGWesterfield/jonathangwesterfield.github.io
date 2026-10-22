@@ -41,6 +41,12 @@ jobs:
       - name: Build static site
         run: npm run build
 
+      - name: Install browser for smoke and accessibility checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Check navigation, mobile reflow, and accessibility
+        run: npm run test:browser
+
       - name: Check whether content has met the release gate
         id: release-status
         run: echo "ready=$(npm run --silent release:status)" >> "$GITHUB_OUTPUT"

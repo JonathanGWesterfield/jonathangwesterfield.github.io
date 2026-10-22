@@ -1,0 +1,23 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  loading?: "eager" | "lazy";
+  sizes?: string;
+}
+
+const { src, alt, width, height, loading = "lazy", sizes = "100vw" } = Astro.props;
+---
+
+<img
+  class="responsive-image"
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  sizes={sizes}
+/>

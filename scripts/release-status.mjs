@@ -22,16 +22,81 @@ async function hasApprovedWork() {
     markdownEntries.map((entry) => readFile(path.join(directory, entry.name), "utf8")),
   );
 
-  return contents.some((content) => /^approvalStatus:\s*approved\s*$/m.test(content));
+  return contents.some(
+    (content) =>
+      /^approvalStatus:\s*approved\s*$/m.test(content) &&
+      /^confidentialityReview:\s*true\s*$/m.test(content),
+  );
+}
+
+async function filesIn(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const nested = await Promise.all(
+    entries.map(async (entry) => {
+      const filePath = path.join(directory, entry.name);
+      return entry.isDirectory() ? filesIn(filePath) : [filePath];
+    }),
+  );
+
+  return nested.flat();
+}
+
+async function renderedOutputIsReady() {
+  try {
+    const outputFiles = await filesIn("dist");
+    const htmlFiles = outputFiles.filter((filePath) => filePath.endsWith(".html"));
+    const contents = await Promise.all(
+      htmlFiles.map((filePath) => readFile(filePath, "utf8")),
+    );
+
+    return (
+      htmlFiles.length > 0 &&
+      contents.every(
+        (content) =>
+          !/portfolio foundation|under review|to be reviewed|draft case study/i.test(
+            content,
+          ),
+      )
+    );
+  } catch {
+    return false;
+  }
+}
+
+function profileHasLinkKind(profile, kind) {
+  return new RegExp(`^\\s+kind:\\s*${kind}\\s*$`, "m").test(profile);
+}
+
+function profileHasReleasePlaceholders(profile) {
+  return /portfolio foundation|under review|to be reviewed/i.test(profile);
+}
+
+function profileHasValue(profile, field) {
+  return new RegExp(`^${field}:\\s*\\S.+$`, "m").test(profile);
 }
 
 const profile = await readFile("src/content/site/profile.md", "utf8");
 const profileApproved = /^approvalStatus:\s*approved\s*$/m.test(profile);
+const profileLinksReady = ["github", "linkedin", "contact"].every((kind) =>
+  profileHasLinkKind(profile, kind),
+);
+const profilePageCopyReady = ["about", "resumeSummary", "contactIntroduction"].every(
+  (field) => profileHasValue(profile, field),
+);
+const profileIsReady =
+  profileApproved &&
+  profileLinksReady &&
+  profilePageCopyReady &&
+  !profileHasReleasePlaceholders(profile);
+const profileHasApprovedResume =
+  /^resumeFile:\s*\/resume\/Jonathan-Westerfield-Resume\.pdf\s*$/m.test(profile);
 const resumeExists = await fileExists("public/resume/Jonathan-Westerfield-Resume.pdf");
 const releaseReady =
   release.status === "public" &&
-  profileApproved &&
+  profileIsReady &&
+  profileHasApprovedResume &&
   resumeExists &&
-  (await hasApprovedWork());
+  (await hasApprovedWork()) &&
+  (await renderedOutputIsReady());
 
 process.stdout.write(`${releaseReady}\n`);

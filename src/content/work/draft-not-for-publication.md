@@ -4,8 +4,12 @@ summary: Placeholder metadata used to validate the future case-study collection.
 role: To be reviewed
 timeframe: To be reviewed
 situation: This internal-only placeholder prevents an empty collection during the foundation phase.
+responsibility: To be reviewed
 constraints:
   - Do not publish without factual review.
+approach: To be reviewed
+outcome: To be reviewed
+relevance: To be reviewed
 technologies:
   - To be reviewed
 featured: false

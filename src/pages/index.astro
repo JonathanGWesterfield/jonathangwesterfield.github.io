@@ -1,68 +1,136 @@
 ---
-import { getEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import ActionLink from "../components/ActionLink.astro";
+import PublicLinks from "../components/PublicLinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import StatusPanel from "../components/StatusPanel.astro";
+import WorkCard from "../components/WorkCard.astro";
+import release from "../data/release.json";
+import { getSiteProfile } from "../lib/site";
+import { isPublicWork } from "../lib/work";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const profile = await getEntry("site", "profile");
-
-if (!profile) {
-  throw new Error("The required site profile entry is missing.");
-}
+const profile = await getSiteProfile();
+const publicWork = (await getCollection("work"))
+  .filter(isPublicWork)
+  .sort((first, second) => first.data.order - second.data.order);
+const featuredWork = publicWork.filter((entry) => entry.data.featured);
+const selectedWork = featuredWork.length > 0 ? featuredWork : publicWork.slice(0, 3);
+const isPublic =
+  release.status === "public" && profile.data.approvalStatus === "approved";
+const approvedLinks =
+  profile.data.approvalStatus === "approved" ? profile.data.publicLinks : [];
 ---
 
-<BaseLayout
-  title={`${profile.data.name} — portfolio foundation`}
-  description={profile.data.description}
->
+<BaseLayout description={profile.data.description}>
   <SiteHeader slot="header" currentPath="/" />
   <section class="hero">
     <div class="container hero-content">
-      <p class="eyebrow">Astro portfolio foundation</p>
-      <h1>{profile.data.professionalTitle}</h1>
-      <p class="lede">
-        The new site structure, accessibility baseline, and publishing safeguards are in
-        place. Public biography, work samples, and contact details will be added only
-        after factual and confidentiality review.
+      <p class="eyebrow">
+        {isPublic ? "Professional portfolio" : "Astro portfolio foundation"}
       </p>
-      <div class="action-row" aria-label="Planned portfolio sections">
-        <a class="button button-primary" href="/work/">
-          View work structure
-        </a>
-        <a class="button button-secondary" href="/resume/">
-          View résumé structure
-        </a>
+      <h1>{profile.data.professionalTitle}</h1>
+      {isPublic ? (
+        <p class="lede">{profile.data.description}</p>
+      ) : (
+        <p class="lede">
+          The new site structure, accessibility baseline, and publishing safeguards are
+          in place. Public biography, work samples, and contact details will be added
+          only after factual and confidentiality review.
+        </p>
+      )}
+      <div class="action-row" aria-label="Primary actions">
+        {isPublic ? (
+          <>
+            <ActionLink href="/work/">View selected work</ActionLink>
+            {profile.data.resumeFile && (
+              <ActionLink href={profile.data.resumeFile} variant="secondary">
+                Download résumé
+              </ActionLink>
+            )}
+          </>
+        ) : (
+          <>
+            <ActionLink href="/work/">View work structure</ActionLink>
+            <ActionLink href="/resume/" variant="secondary">
+              View résumé structure
+            </ActionLink>
+          </>
+        )}
       </div>
+      <PublicLinks links={approvedLinks} heading="Primary public links" />
     </div>
   </section>
-  <section class="section" aria-labelledby="foundation-heading">
-    <div class="container narrow">
-      <p class="eyebrow">Foundation status</p>
-      <h2 id="foundation-heading">Built for a clear hiring-manager journey.</h2>
-      <div class="foundation-grid">
-        <article class="panel">
-          <h3>Evidence-first content</h3>
-          <p>
-            Case studies use validated fields for responsibility, constraints, technical
-            approach, approval, and confidentiality review.
-          </p>
-        </article>
-        <article class="panel">
-          <h3>Accessible by default</h3>
-          <p>
-            The base layout includes semantic landmarks, a skip link, visible focus,
-            responsive type, and motion-safe interaction patterns.
-          </p>
-        </article>
-        <article class="panel">
-          <h3>Safe to release</h3>
-          <p>
-            The deployment workflow will remain gated until current public content,
-            approved links, a résumé, and proof of work are ready.
-          </p>
-        </article>
+  <section class="section section-tint" aria-labelledby="work-heading">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Selected work</p>
+        <h2 id="work-heading">
+          {isPublic
+            ? "Technical evidence for the work ahead."
+            : "Technical evidence, when it is ready to share."}
+        </h2>
       </div>
+      {selectedWork.length > 0 ? (
+        <div class="work-grid">
+          {selectedWork.map((entry) => (
+            <WorkCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <StatusPanel heading="Case studies are still in factual and confidentiality review.">
+          <p>
+            Approved work will appear here with the context, responsibility,
+            constraints, technical approach, and outcome needed for a meaningful hiring
+            conversation.
+          </p>
+        </StatusPanel>
+      )}
     </div>
   </section>
+  {isPublic ? (
+    <section class="section" aria-labelledby="contact-heading">
+      <div class="container narrow">
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-heading">Continue the conversation.</h2>
+        <p class="lede">{profile.data.contactIntroduction}</p>
+        <PublicLinks
+          links={approvedLinks.filter((link) => link.kind === "contact")}
+          heading="Contact routes"
+        />
+      </div>
+    </section>
+  ) : (
+    <section class="section" aria-labelledby="foundation-heading">
+      <div class="container narrow">
+        <p class="eyebrow">Foundation status</p>
+        <h2 id="foundation-heading">Built for a clear hiring-manager journey.</h2>
+        <div class="foundation-grid">
+          <article class="panel">
+            <h3>Evidence-first content</h3>
+            <p>
+              Case studies use validated fields for responsibility, constraints,
+              technical approach, approval, and confidentiality review.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>Accessible by default</h3>
+            <p>
+              The base layout includes semantic landmarks, a skip link, visible focus,
+              responsive type, and motion-safe interaction patterns.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>Safe to release</h3>
+            <p>
+              The deployment workflow will remain gated until current public content,
+              approved links, a résumé, and proof of work are ready.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  )}
   <SiteFooter slot="footer" />
 </BaseLayout>

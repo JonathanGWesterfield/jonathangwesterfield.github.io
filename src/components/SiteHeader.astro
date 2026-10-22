@@ -1,9 +1,12 @@
 ---
+import { getSiteProfile } from "../lib/site";
+
 interface Props {
   currentPath: string;
 }
 
 const { currentPath } = Astro.props;
+const profile = await getSiteProfile();
 
 const links = [
   { href: "/", label: "Home" },
@@ -16,8 +19,8 @@ const links = [
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="site-name" href="/" aria-label="Jonathan Westerfield home">
-      Jonathan Westerfield
+    <a class="site-name" href="/" aria-label={`${profile.data.name} home`}>
+      {profile.data.name}
     </a>
     <nav aria-label="Primary navigation">
       <ul class="site-nav">

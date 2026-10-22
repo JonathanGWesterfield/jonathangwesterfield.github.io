@@ -1,23 +1,61 @@
 ---
+import PageIntro from "../components/PageIntro.astro";
+import PublicLinks from "../components/PublicLinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import StatusPanel from "../components/StatusPanel.astro";
+import release from "../data/release.json";
+import { getSiteProfile } from "../lib/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const profile = await getSiteProfile();
+const isPublic =
+  release.status === "public" && profile.data.approvalStatus === "approved";
+const approvedLinks =
+  profile.data.approvalStatus === "approved" ? profile.data.publicLinks : [];
 ---
 
 <BaseLayout
-  title="About — portfolio foundation"
-  description="Professional profile structure for Jonathan Westerfield's portfolio."
+  title={isPublic ? "About" : "About — portfolio foundation"}
+  description={
+    isPublic
+      ? (profile.data.about ?? profile.data.description)
+      : "Professional profile structure for Jonathan Westerfield's portfolio."
+  }
 >
   <SiteHeader slot="header" currentPath="/about/" />
-  <section class="page-intro">
-    <div class="container narrow">
-      <p class="eyebrow">About</p>
-      <h1>A concise professional narrative is under review.</h1>
-      <p class="lede">
-        The final page will use one approved role statement and links that match the
-        public résumé, LinkedIn profile, and GitHub profile.
-      </p>
-    </div>
-  </section>
+  {isPublic ? (
+    <>
+      <PageIntro
+        eyebrow="About"
+        title="About"
+        lede={profile.data.about ?? profile.data.description}
+      />
+      <section class="section">
+        <div class="container narrow">
+          <PublicLinks links={approvedLinks} heading="Public professional links" />
+        </div>
+      </section>
+    </>
+  ) : (
+    <>
+      <PageIntro
+        eyebrow="About"
+        title="A concise professional narrative is under review."
+        lede="The final page will use one approved role statement and links that match the public résumé, LinkedIn profile, and GitHub profile."
+      />
+      <section class="section">
+        <div class="container narrow">
+          <StatusPanel heading="The future About page has one job: add useful context.">
+            <p>
+              It will complement the résumé and case studies with a short, factual
+              account of working focus and collaboration style—not a technology
+              inventory or a generic personal-brand story.
+            </p>
+          </StatusPanel>
+        </div>
+      </section>
+    </>
+  )}
   <SiteFooter slot="footer" />
 </BaseLayout>

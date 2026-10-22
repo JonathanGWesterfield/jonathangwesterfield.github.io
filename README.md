@@ -27,10 +27,17 @@ Useful checks:
 npm run format:check
 npm run check
 npm run build
+npm run test:browser
 ```
 
 `npm run build` also checks that the generated site does not recreate the old
-GitHub Pages project-path bug.
+GitHub Pages project-path bug, includes the expected accessibility landmarks,
+keeps one page heading per route, and catches broken internal links.
+
+`npm run test:browser` serves the built output locally, checks each static route
+at desktop and 320px widths, exercises the primary navigation and skip link,
+and runs axe WCAG 2.2 A/AA checks. Run `npx playwright install chromium` once
+before the first local browser test.
 
 ## Content editing
 
@@ -50,8 +57,11 @@ are present:
 
 1. `src/data/release.json` has `status: public`.
 2. `site/profile.md` is approved.
-3. At least one approved work entry exists.
-4. `public/resume/Jonathan-Westerfield-Resume.pdf` exists.
+3. The profile contains the approved About, résumé, and contact summaries, plus GitHub,
+   LinkedIn, and contact routes.
+4. The profile references `resume/Jonathan-Westerfield-Resume.pdf`, and that file exists.
+5. At least one approved, confidentiality-reviewed work entry exists.
+6. The generated pages contain no development placeholders.
 
 The workflow validates every pull request and push. It creates and deploys a
 GitHub Pages artifact only when that release gate returns true on `master`.
