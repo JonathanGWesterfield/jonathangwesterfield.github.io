@@ -17,13 +17,13 @@ const isPublic = release.status === "public";
 
 <BaseLayout
   title={isPublic ? "Work" : "Work — portfolio foundation"}
-  description="Case-study structure for Jonathan Westerfield's professional portfolio."
+  description="Engineering-story structure for Jonathan Westerfield's professional portfolio."
 >
   <SiteHeader slot="header" currentPath="/work/" />
   <PageIntro
     eyebrow="Selected work"
-    title="Case studies that show how the work was done."
-    lede="Each study will explain context, responsibility, constraints, technical decisions, and approved outcomes without exposing confidential implementation details."
+    title="Selected work, with the engineering behind it."
+    lede="Each story will explain context, responsibility, constraints, technical decisions, and approved outcomes without exposing confidential implementation details."
   />
   <section class="section">
     <div class="container">
@@ -34,7 +34,7 @@ const isPublic = release.status === "public";
           ))}
         </div>
       ) : (
-        <StatusPanel heading="No case studies are public yet.">
+        <StatusPanel heading="No engineering stories are public yet.">
           <p>
             This route is ready for reviewed work, but it will stay intentionally empty
             until at least one story is accurate, approved, and safe to share.

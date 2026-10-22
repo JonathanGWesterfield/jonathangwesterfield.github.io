@@ -158,7 +158,7 @@ try {
   await desktopPage.waitForURL(`${baseUrl}/work/`);
   assert.equal(
     await desktopPage.getByRole("heading", { level: 1 }).innerText(),
-    "Case studies that show how the work was done.",
+    "Selected work, with the engineering behind it.",
   );
 
   const missingRoute = await desktopPage.goto(`${baseUrl}/missing-route/`, {

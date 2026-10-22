@@ -13,6 +13,7 @@ const isPublic =
   release.status === "public" && profile.data.approvalStatus === "approved";
 const resumeFile =
   profile.data.approvalStatus === "approved" ? profile.data.resumeFile : undefined;
+const experience = isPublic ? (profile.data.experience ?? []) : [];
 ---
 
 <BaseLayout
@@ -38,6 +39,31 @@ const resumeFile =
           )}
         </div>
       </section>
+      {experience.length > 0 && (
+        <section class="section section-tint" aria-labelledby="experience-heading">
+          <div class="container narrow">
+            <div class="section-heading">
+              <p class="eyebrow">Experience snapshot</p>
+              <h2 id="experience-heading">Selected experience</h2>
+            </div>
+            <ol class="experience-list" data-experience-snapshot>
+              {experience.map((entry) => (
+                <li>
+                  <article>
+                    <header>
+                      <h3>{entry.organization}</h3>
+                      <p class="experience-meta">
+                        {entry.role} <span aria-hidden="true">·</span> {entry.timeframe}
+                      </p>
+                    </header>
+                    <p>{entry.summary}</p>
+                  </article>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
     </>
   ) : (
     <>

@@ -9,7 +9,7 @@ eligible for production deployment until the release gate passes.
 
 - Astro with TypeScript and static output
 - Plain modern CSS and no required browser-side JavaScript
-- Markdown content collections for the public profile and case studies
+- Markdown content collections for the public profile and engineering stories
 - GitHub Actions and GitHub Pages for the eventual production build
 
 ## Local development
@@ -43,8 +43,9 @@ before the first local browser test.
 
 Public content belongs under `src/content/`:
 
-- `site/profile.md` is the single source for approved public profile metadata.
-- `work/*.md` will hold one reviewed case study per file.
+- `site/profile.md` is the single source for approved public profile metadata and
+  the concise HTML experience snapshot on the résumé route.
+- `work/*.md` will hold one reviewed engineering story per file.
 
 The collection schema requires an approval status and confidentiality review
 for every work entry. Do not add internal notes, source evidence, application
@@ -57,11 +58,12 @@ are present:
 
 1. `src/data/release.json` has `status: public`.
 2. `site/profile.md` is approved.
-3. The profile contains the approved About, résumé, and contact summaries, plus GitHub,
-   LinkedIn, and contact routes.
+3. The profile contains the approved About, résumé, and contact summaries; a concise
+   experience snapshot; plus GitHub, LinkedIn, and contact routes.
 4. The profile references `resume/Jonathan-Westerfield-Resume.pdf`, and that file exists.
 5. At least one approved, confidentiality-reviewed work entry exists.
-6. The generated pages contain no development placeholders.
+6. The generated résumé includes its accessible experience snapshot and the
+   generated pages contain no development placeholders.
 
 The workflow validates every pull request and push. It creates and deploys a
 GitHub Pages artifact only when that release gate returns true on `master`.

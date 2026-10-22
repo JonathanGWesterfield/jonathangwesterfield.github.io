@@ -9,6 +9,13 @@ const publicLink = z.object({
   kind: z.enum(["github", "linkedin", "contact", "other"]),
 });
 
+const experienceSnapshot = z.object({
+  organization: z.string().min(1),
+  role: z.string().min(1),
+  timeframe: z.string().min(1),
+  summary: z.string().min(1),
+});
+
 const site = defineCollection({
   loader: glob({
     base: "./src/content/site",
@@ -23,6 +30,7 @@ const site = defineCollection({
     contactIntroduction: z.string().optional(),
     publicLinks: z.array(publicLink).default([]),
     resumeFile: z.string().optional(),
+    experience: z.array(experienceSnapshot).min(2).max(4).optional(),
     approvalStatus,
     lastReviewed: z.coerce.date(),
   }),

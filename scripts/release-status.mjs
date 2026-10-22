@@ -53,10 +53,29 @@ async function renderedOutputIsReady() {
       htmlFiles.length > 0 &&
       contents.every(
         (content) =>
-          !/portfolio foundation|under review|to be reviewed|draft case study/i.test(
+          !/portfolio foundation|under review|to be reviewed|draft engineering story/i.test(
             content,
           ),
       )
+    );
+  } catch {
+    return false;
+  }
+}
+
+async function renderedResumeHasExperienceSnapshot() {
+  try {
+    const resume = await readFile("dist/resume/index.html", "utf8");
+    const experienceList = resume.match(
+      /<ol\b[^>]*\bdata-experience-snapshot\b[^>]*>([\s\S]*?)<\/ol>/i,
+    );
+
+    return (
+      /<section\b[^>]*\baria-labelledby=["']experience-heading["'][^>]*>/i.test(
+        resume,
+      ) &&
+      experienceList !== null &&
+      (experienceList[1].match(/<li\b/gi) ?? []).length >= 2
     );
   } catch {
     return false;
@@ -75,6 +94,10 @@ function profileHasValue(profile, field) {
   return new RegExp(`^${field}:\\s*\\S.+$`, "m").test(profile);
 }
 
+function profileHasExperienceSnapshot(profile) {
+  return (profile.match(/^\s{2}- organization:\s*\S.+$/gm) ?? []).length >= 2;
+}
+
 const profile = await readFile("src/content/site/profile.md", "utf8");
 const profileApproved = /^approvalStatus:\s*approved\s*$/m.test(profile);
 const profileLinksReady = ["github", "linkedin", "contact"].every((kind) =>
@@ -83,10 +106,12 @@ const profileLinksReady = ["github", "linkedin", "contact"].every((kind) =>
 const profilePageCopyReady = ["about", "resumeSummary", "contactIntroduction"].every(
   (field) => profileHasValue(profile, field),
 );
+const profileExperienceReady = profileHasExperienceSnapshot(profile);
 const profileIsReady =
   profileApproved &&
   profileLinksReady &&
   profilePageCopyReady &&
+  profileExperienceReady &&
   !profileHasReleasePlaceholders(profile);
 const profileHasApprovedResume =
   /^resumeFile:\s*\/resume\/Jonathan-Westerfield-Resume\.pdf\s*$/m.test(profile);
@@ -97,6 +122,7 @@ const releaseReady =
   profileHasApprovedResume &&
   resumeExists &&
   (await hasApprovedWork()) &&
+  (await renderedResumeHasExperienceSnapshot()) &&
   (await renderedOutputIsReady());
 
 process.stdout.write(`${releaseReady}\n`);
