@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ActionLink from "../components/ActionLink.astro";
+import ExperienceSnapshot from "../components/ExperienceSnapshot.astro";
 import PublicLinks from "../components/PublicLinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -21,6 +22,7 @@ const isPublic =
   release.status === "public" && profile.data.approvalStatus === "approved";
 const approvedLinks =
   profile.data.approvalStatus === "approved" ? profile.data.publicLinks : [];
+const experience = isPublic ? (profile.data.experience ?? []) : [];
 ---
 
 <BaseLayout description={profile.data.description}>
@@ -32,7 +34,12 @@ const approvedLinks =
       </p>
       <h1>{profile.data.professionalTitle}</h1>
       {isPublic ? (
-        <p class="lede">{profile.data.description}</p>
+        <>
+          <p class="lede">{profile.data.description}</p>
+          {profile.data.availabilityNote && (
+            <p class="availability-note">{profile.data.availabilityNote}</p>
+          )}
+        </>
       ) : (
         <p class="lede">
           The new site structure, accessibility baseline, and publishing safeguards are
@@ -89,6 +96,14 @@ const approvedLinks =
       )}
     </div>
   </section>
+  {isPublic && experience.length > 0 && (
+    <ExperienceSnapshot
+      entries={experience}
+      headingId="experience-home-heading"
+      eyebrow="Experience"
+      heading="A record of building production systems."
+    />
+  )}
   {isPublic ? (
     <section class="section" aria-labelledby="contact-heading">
       <div class="container narrow">

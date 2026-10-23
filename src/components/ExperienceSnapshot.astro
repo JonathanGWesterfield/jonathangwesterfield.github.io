@@ -1,0 +1,46 @@
+---
+interface ExperienceEntry {
+  organization: string;
+  role: string;
+  timeframe: string;
+  summary: string;
+}
+
+interface Props {
+  entries: ExperienceEntry[];
+  headingId: string;
+  eyebrow?: string;
+  heading?: string;
+}
+
+const {
+  entries,
+  headingId,
+  eyebrow = "Experience snapshot",
+  heading = "Selected experience",
+} = Astro.props;
+---
+
+<section class="section section-tint" aria-labelledby={headingId}>
+  <div class="container narrow">
+    <div class="section-heading">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={headingId}>{heading}</h2>
+    </div>
+    <ol class="experience-list" data-experience-snapshot>
+      {entries.map((entry) => (
+        <li>
+          <article>
+            <header>
+              <h3>{entry.organization}</h3>
+              <p class="experience-meta">
+                {entry.role} <span aria-hidden="true">·</span> {entry.timeframe}
+              </p>
+            </header>
+            <p>{entry.summary}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

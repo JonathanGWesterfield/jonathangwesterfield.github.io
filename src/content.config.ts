@@ -28,6 +28,7 @@ const site = defineCollection({
     about: z.string().optional(),
     resumeSummary: z.string().optional(),
     contactIntroduction: z.string().optional(),
+    availabilityNote: z.string().optional(),
     publicLinks: z.array(publicLink).default([]),
     resumeFile: z.string().optional(),
     experience: z.array(experienceSnapshot).min(2).max(4).optional(),

@@ -199,6 +199,12 @@ h3 {
   font-size: clamp(1.125rem, 1.03rem + 0.3vw, 1.35rem);
 }
 
+.availability-note {
+  margin: 1.25rem 0 0;
+  color: var(--accent-strong);
+  font-weight: 750;
+}
+
 .action-row {
   display: flex;
   flex-wrap: wrap;

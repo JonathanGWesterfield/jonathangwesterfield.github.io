@@ -13,7 +13,9 @@ const isPublic =
   release.status === "public" && profile.data.approvalStatus === "approved";
 const contactLinks =
   profile.data.approvalStatus === "approved"
-    ? profile.data.publicLinks.filter((link) => link.kind === "contact")
+    ? profile.data.publicLinks.filter(
+        (link) => link.kind === "contact" || link.kind === "linkedin",
+      )
     : [];
 ---
 
