@@ -20,7 +20,7 @@ technologies:
   - React
   - TypeScript
 featured: true
-order: 3
+order: 4
 links:
   - label: View Librarian on GitHub
     url: https://github.com/JonathanGWesterfield/Librarian

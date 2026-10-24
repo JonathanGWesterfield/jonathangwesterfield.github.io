@@ -1,11 +1,11 @@
 ---
 name: Jonathan Westerfield
 professionalTitle: Backend & Platform Engineer
-description: Backend and platform engineer with 5+ years at Amazon building Java and Python services, APIs, and reliable distributed systems.
-about: Jonathan builds backend services and platforms where clear interfaces, useful diagnostics, and repeatable delivery help teams operate complex systems with confidence. His work spans Java service and API-contract changes, production validation and debugging, and developer-facing tools. He is currently building Librarian, an open-source local-first retrieval platform in Python and FastAPI.
-resumeSummary: Backend and platform engineer with 5+ years at Amazon. Recent work includes Java service and API-contract changes, production validation and diagnostics, and an open-source retrieval platform built with Python and FastAPI.
-contactIntroduction: Jonathan is open to backend and platform engineering conversations. The quickest ways to reach him are email or LinkedIn.
-availabilityNote: Targeting backend and platform engineering roles in Berlin.
+description: I'm a backend and platform engineer with 5+ years at Amazon, building Java and Python services, APIs, and reliable distributed systems.
+about: I build backend services and platforms where clear interfaces, useful diagnostics, and repeatable delivery help teams operate complex systems with confidence. My work spans Java service and API-contract changes, production validation and debugging, and developer-facing tools. I'm currently building Librarian, an open-source local-first retrieval platform in Python and FastAPI.
+resumeSummary: I'm a backend and platform engineer with 5+ years at Amazon. My recent work includes Java service and API-contract changes, production validation and diagnostics, and an open-source retrieval platform built with Python and FastAPI.
+contactIntroduction: I'm open to backend and platform engineering conversations. The quickest ways to reach me are email or LinkedIn.
+availabilityNote: I'm targeting backend and platform engineering roles in Berlin.
 publicLinks:
   - label: GitHub
     url: https://github.com/JonathanGWesterfield
@@ -13,7 +13,7 @@ publicLinks:
   - label: LinkedIn
     url: https://www.linkedin.com/in/jonathangwesterfield
     kind: linkedin
-  - label: Email Jonathan
+  - label: Email me
     url: mailto:jonathan.g.westerfield@gmail.com
     kind: contact
 resumeFile: /resume/Jonathan-Westerfield-Resume.pdf
