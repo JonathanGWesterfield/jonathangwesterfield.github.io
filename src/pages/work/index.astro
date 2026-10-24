@@ -9,14 +9,16 @@ import release from "../../data/release.json";
 import { isPublicWork } from "../../lib/work";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const work = (await getCollection("work"))
-  .filter(isPublicWork)
-  .sort((first, second) => first.data.order - second.data.order);
-const isPublic = release.status === "public";
+const work =
+  release.status === "public"
+    ? (await getCollection("work"))
+        .filter(isPublicWork)
+        .sort((first, second) => first.data.order - second.data.order)
+    : [];
 ---
 
 <BaseLayout
-  title={isPublic ? "Work" : "Work — portfolio foundation"}
+  title="Work"
   description="Engineering-story structure for Jonathan Westerfield's professional portfolio."
 >
   <SiteHeader slot="header" currentPath="/work/" />

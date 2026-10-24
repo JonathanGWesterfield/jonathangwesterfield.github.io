@@ -3,10 +3,15 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 import ResponsiveImage from "../../components/ResponsiveImage.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
+import release from "../../data/release.json";
 import { isPublicWork } from "../../lib/work";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
+  if (release.status !== "public") {
+    return [];
+  }
+
   const work = (await getCollection("work")).filter(isPublicWork);
 
   return work.map((entry) => ({

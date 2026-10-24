@@ -1,5 +1,4 @@
 ---
-import release from "../data/release.json";
 import { getSiteProfile } from "../lib/site";
 
 const profile = await getSiteProfile();
@@ -7,11 +6,7 @@ const profile = await getSiteProfile();
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p>
-      {release.status === "public"
-        ? "Professional portfolio."
-        : "Portfolio foundation. Public content is under review."}
-    </p>
+    <p>Professional portfolio.</p>
     <p>
       © {new Date().getFullYear()} {profile.data.name}
     </p>

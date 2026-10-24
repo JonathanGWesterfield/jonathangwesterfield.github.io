@@ -13,15 +13,16 @@ import { isPublicWork } from "../lib/work";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const profile = await getSiteProfile();
-const publicWork = (await getCollection("work"))
-  .filter(isPublicWork)
-  .sort((first, second) => first.data.order - second.data.order);
-const featuredWork = publicWork.filter((entry) => entry.data.featured);
-const selectedWork = featuredWork.length > 0 ? featuredWork : publicWork.slice(0, 3);
 const isPublic =
   release.status === "public" && profile.data.approvalStatus === "approved";
-const approvedLinks =
-  profile.data.approvalStatus === "approved" ? profile.data.publicLinks : [];
+const publicWork = isPublic
+  ? (await getCollection("work"))
+      .filter(isPublicWork)
+      .sort((first, second) => first.data.order - second.data.order)
+  : [];
+const featuredWork = publicWork.filter((entry) => entry.data.featured);
+const selectedWork = featuredWork.length > 0 ? featuredWork : publicWork.slice(0, 3);
+const approvedLinks = isPublic ? profile.data.publicLinks : [];
 const experience = isPublic ? (profile.data.experience ?? []) : [];
 ---
 
@@ -29,9 +30,7 @@ const experience = isPublic ? (profile.data.experience ?? []) : [];
   <SiteHeader slot="header" currentPath="/" />
   <section class="hero">
     <div class="container hero-content">
-      <p class="eyebrow">
-        {isPublic ? "Professional portfolio" : "Astro portfolio foundation"}
-      </p>
+      <p class="eyebrow">Professional portfolio</p>
       <h1>{profile.data.professionalTitle}</h1>
       {isPublic ? (
         <>
@@ -119,7 +118,7 @@ const experience = isPublic ? (profile.data.experience ?? []) : [];
   ) : (
     <section class="section" aria-labelledby="foundation-heading">
       <div class="container narrow">
-        <p class="eyebrow">Foundation status</p>
+        <p class="eyebrow">Portfolio</p>
         <h2 id="foundation-heading">Built for a clear hiring-manager journey.</h2>
         <div class="foundation-grid">
           <article class="panel">
