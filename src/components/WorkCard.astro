@@ -6,8 +6,9 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, summary, role, timeframe, technologies } = entry.data;
+const { title, summary, impact, role, timeframe, technologies } = entry.data;
 const href = `/work/${entry.id}/`;
+const cardTechnologies = technologies.slice(0, 4);
 ---
 
 <article class="work-card">
@@ -18,8 +19,11 @@ const href = `/work/${entry.id}/`;
     <a href={href}>{title}</a>
   </h3>
   <p>{summary}</p>
+  <p class="work-card-impact">
+    <strong>Impact:</strong> {impact}
+  </p>
   <ul class="tag-list" aria-label={`${title} technologies`}>
-    {technologies.map((technology) => (
+    {cardTechnologies.map((technology) => (
       <li>{technology}</li>
     ))}
   </ul>

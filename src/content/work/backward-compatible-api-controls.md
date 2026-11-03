@@ -1,6 +1,7 @@
 ---
 title: Evolving an API without disrupting partner teams
 summary: Reworked an API-changing proposal into a backward-compatible control path for a pricing experimentation platform.
+impact: Accelerated development and production testing for new pricing mechanics by more than 85%.
 role: Software Development Engineer, Amazon Ads
 timeframe: May 2021–December 2022
 situation: A new experimentation capability needed more precise controls, but the first technical direction would have required partner teams to change their API integrations. That made the proposal costly to adopt and put the rollout at risk.
@@ -17,8 +18,8 @@ technologies:
   - REST APIs
   - API contracts
   - Experimentation platforms
-featured: true
-order: 2
+featured: false
+order: 5
 approvalStatus: approved
 confidentialityReview: true
 relevance: Demonstrates API design judgment, cross-team communication, and a preference for changes that improve a platform without transferring unnecessary migration cost to its users.

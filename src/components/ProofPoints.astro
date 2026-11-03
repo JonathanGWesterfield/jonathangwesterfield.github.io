@@ -1,0 +1,30 @@
+---
+interface ProofPoint {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  points: ProofPoint[];
+}
+
+const { points } = Astro.props;
+---
+
+{points.length > 0 && (
+  <section class="proof-strip" aria-labelledby="proof-heading">
+    <div class="container">
+      <h2 id="proof-heading" class="visually-hidden">
+        Career highlights
+      </h2>
+      <ul class="proof-points">
+        {points.map((point) => (
+          <li>
+            <strong>{point.value}</strong>
+            <span>{point.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

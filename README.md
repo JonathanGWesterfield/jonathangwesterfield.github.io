@@ -44,8 +44,16 @@ before the first local browser test.
 Public content belongs under `src/content/`:
 
 - `site/profile.md` is the single source for approved public profile metadata and
-  the concise HTML experience snapshot on the résumé route.
-- `work/*.md` will hold one reviewed engineering story per file.
+  the homepage’s proof points, working approach, and concise experience snapshot.
+- `work/*.md` holds one reviewed engineering story per file. Mark only the strongest
+  stories `featured: true`; those are the cards on the one-page homepage. Every story
+  needs a concise `impact` field so the cards lead with the result, while the full
+  route holds the engineering detail.
+
+The homepage is the recruiter-first path. Its primary navigation uses in-page links
+for work, experience, contact, and the public résumé. Individual work routes remain
+available for deeper review, but the site should not grow empty top-level pages just
+to make the navigation longer.
 
 The collection schema requires an approval status and confidentiality review
 for every work entry. Do not add internal notes, source evidence, application

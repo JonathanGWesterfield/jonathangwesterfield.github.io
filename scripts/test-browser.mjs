@@ -155,10 +155,15 @@ try {
     "The first keyboard focus target must be the skip link.",
   );
   await desktopPage.getByRole("link", { name: "Work", exact: true }).click();
-  await desktopPage.waitForURL(`${baseUrl}/work/`);
+  await desktopPage.waitForURL(`${baseUrl}/#work`);
   assert.equal(
     await desktopPage.getByRole("heading", { level: 1 }).innerText(),
-    "Selected work, with the engineering behind it.",
+    "Backend & Platform Engineer",
+  );
+  assert.equal(
+    await desktopPage.locator("#work").count(),
+    1,
+    "The primary navigation must reach the selected-work section on the homepage.",
   );
 
   const missingRoute = await desktopPage.goto(`${baseUrl}/missing-route/`, {

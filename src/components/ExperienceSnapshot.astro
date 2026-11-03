@@ -9,6 +9,7 @@ interface ExperienceEntry {
 interface Props {
   entries: ExperienceEntry[];
   headingId: string;
+  sectionId?: string;
   eyebrow?: string;
   heading?: string;
 }
@@ -16,12 +17,13 @@ interface Props {
 const {
   entries,
   headingId,
+  sectionId,
   eyebrow = "Experience snapshot",
   heading = "Selected experience",
 } = Astro.props;
 ---
 
-<section class="section section-tint" aria-labelledby={headingId}>
+<section id={sectionId} class="section section-tint" aria-labelledby={headingId}>
   <div class="container narrow">
     <div class="section-heading">
       <p class="eyebrow">{eyebrow}</p>

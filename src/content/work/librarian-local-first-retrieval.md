@@ -1,6 +1,7 @@
 ---
 title: "Librarian: a local-first retrieval platform"
 summary: Building an open-source system that turns an EPUB library into a source-grounded, local question-answering experience.
+impact: A public, inspectable implementation of an end-to-end retrieval system, from ingestion and storage through API and browser workflows.
 role: Independent Software Engineer
 timeframe: July 2025–Present
 situation: Long-form personal libraries are difficult to search in a way that preserves the source material and keeps the workflow under the reader’s control. I wanted a practical retrieval system for EPUB collections that can run locally and show where an answer came from.

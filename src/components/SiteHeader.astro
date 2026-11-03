@@ -1,19 +1,21 @@
 ---
+import release from "../data/release.json";
 import { getSiteProfile } from "../lib/site";
 
-interface Props {
-  currentPath: string;
-}
-
-const { currentPath } = Astro.props;
 const profile = await getSiteProfile();
+const showPortfolioContent =
+  import.meta.env.DEV ||
+  (release.status === "public" && profile.data.approvalStatus === "approved");
+const resumeHref =
+  showPortfolioContent && profile.data.resumeFile
+    ? profile.data.resumeFile
+    : "/resume/";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/work/", label: "Work" },
-  { href: "/about/", label: "About" },
-  { href: "/resume/", label: "Résumé" },
-  { href: "/contact/", label: "Contact" },
+  { href: "/#work", label: "Work" },
+  { href: "/#experience", label: "Experience" },
+  { href: resumeHref, label: "Résumé" },
+  { href: "/#contact", label: "Contact" },
 ];
 ---
 
@@ -26,12 +28,7 @@ const links = [
       <ul class="site-nav">
         {links.map((link) => (
           <li>
-            <a
-              href={link.href}
-              aria-current={currentPath === link.href ? "page" : undefined}
-            >
-              {link.label}
-            </a>
+            <a href={link.href}>{link.label}</a>
           </li>
         ))}
       </ul>

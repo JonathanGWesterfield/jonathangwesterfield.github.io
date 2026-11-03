@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import ActionLink from "../components/ActionLink.astro";
 import ExperienceSnapshot from "../components/ExperienceSnapshot.astro";
+import ProofPoints from "../components/ProofPoints.astro";
 import PublicLinks from "../components/PublicLinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -13,26 +14,27 @@ import { isPublicWork } from "../lib/work";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const profile = await getSiteProfile();
-const isPublic =
-  release.status === "public" && profile.data.approvalStatus === "approved";
-const publicWork = isPublic
+const showPortfolioContent =
+  import.meta.env.DEV ||
+  (release.status === "public" && profile.data.approvalStatus === "approved");
+const publicWork = showPortfolioContent
   ? (await getCollection("work"))
       .filter(isPublicWork)
       .sort((first, second) => first.data.order - second.data.order)
   : [];
 const featuredWork = publicWork.filter((entry) => entry.data.featured);
 const selectedWork = featuredWork.length > 0 ? featuredWork : publicWork.slice(0, 3);
-const approvedLinks = isPublic ? profile.data.publicLinks : [];
-const experience = isPublic ? (profile.data.experience ?? []) : [];
+const approvedLinks = showPortfolioContent ? profile.data.publicLinks : [];
+const experience = showPortfolioContent ? (profile.data.experience ?? []) : [];
+const proofPoints = showPortfolioContent ? (profile.data.proofPoints ?? []) : [];
 ---
 
 <BaseLayout description={profile.data.description}>
-  <SiteHeader slot="header" currentPath="/" />
+  <SiteHeader slot="header" />
   <section class="hero">
     <div class="container hero-content">
-      <p class="eyebrow">Professional portfolio</p>
       <h1>{profile.data.professionalTitle}</h1>
-      {isPublic ? (
+      {showPortfolioContent ? (
         <>
           <p class="lede">{profile.data.description}</p>
           {profile.data.availabilityNote && (
@@ -47,9 +49,9 @@ const experience = isPublic ? (profile.data.experience ?? []) : [];
         </p>
       )}
       <div class="action-row" aria-label="Primary actions">
-        {isPublic ? (
+        {showPortfolioContent ? (
           <>
-            <ActionLink href="/work/">View selected work</ActionLink>
+            <ActionLink href="#work">View selected work</ActionLink>
             {profile.data.resumeFile && (
               <ActionLink href={profile.data.resumeFile} variant="secondary">
                 Download résumé
@@ -68,13 +70,14 @@ const experience = isPublic ? (profile.data.experience ?? []) : [];
       <PublicLinks links={approvedLinks} heading="Primary public links" />
     </div>
   </section>
-  <section class="section section-tint" aria-labelledby="work-heading">
+  <ProofPoints points={proofPoints} />
+  <section id="work" class="section section-tint" aria-labelledby="work-heading">
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">Selected work</p>
         <h2 id="work-heading">
-          {isPublic
-            ? "Technical evidence for the work ahead."
+          {showPortfolioContent
+            ? "Selected work, grounded in outcomes."
             : "Technical evidence, when it is ready to share."}
         </h2>
       </div>
@@ -95,16 +98,30 @@ const experience = isPublic ? (profile.data.experience ?? []) : [];
       )}
     </div>
   </section>
-  {isPublic && experience.length > 0 && (
+  {showPortfolioContent && experience.length > 0 && (
     <ExperienceSnapshot
       entries={experience}
+      sectionId="experience"
       headingId="experience-home-heading"
       eyebrow="Experience"
       heading="A record of building production systems."
     />
   )}
-  {isPublic ? (
-    <section class="section" aria-labelledby="contact-heading">
+  {showPortfolioContent ? (
+    <section class="section approach-section" aria-labelledby="approach-heading">
+      <div class="container narrow">
+        <p class="eyebrow">Approach</p>
+        <h2 id="approach-heading">How I work.</h2>
+        <p class="lede">{profile.data.about ?? profile.data.description}</p>
+      </div>
+    </section>
+  ) : null}
+  {showPortfolioContent ? (
+    <section
+      id="contact"
+      class="section contact-section"
+      aria-labelledby="contact-heading"
+    >
       <div class="container narrow">
         <p class="eyebrow">Contact</p>
         <h2 id="contact-heading">Continue the conversation.</h2>

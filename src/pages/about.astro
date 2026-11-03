@@ -9,8 +9,9 @@ import { getSiteProfile } from "../lib/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const profile = await getSiteProfile();
-const isPublic =
-  release.status === "public" && profile.data.approvalStatus === "approved";
+const showPortfolioContent =
+  import.meta.env.DEV ||
+  (release.status === "public" && profile.data.approvalStatus === "approved");
 const approvedLinks =
   profile.data.approvalStatus === "approved" ? profile.data.publicLinks : [];
 ---
@@ -18,13 +19,13 @@ const approvedLinks =
 <BaseLayout
   title="About"
   description={
-    isPublic
+    showPortfolioContent
       ? (profile.data.about ?? profile.data.description)
       : "Professional profile structure for Jonathan Westerfield's portfolio."
   }
 >
-  <SiteHeader slot="header" currentPath="/about/" />
-  {isPublic ? (
+  <SiteHeader slot="header" />
+  {showPortfolioContent ? (
     <>
       <PageIntro
         eyebrow="About"

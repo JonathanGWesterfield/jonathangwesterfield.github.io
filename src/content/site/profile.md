@@ -5,7 +5,16 @@ description: I'm a backend and platform engineer with 5+ years at Amazon, buildi
 about: I build backend services and platforms where clear interfaces, useful diagnostics, and repeatable delivery help teams operate complex systems with confidence. My work spans Java service and API-contract changes, production validation and debugging, and developer-facing tools. I'm currently building Librarian, an open-source local-first retrieval platform in Python and FastAPI.
 resumeSummary: I'm a backend and platform engineer with 5+ years at Amazon. My recent work includes Java service and API-contract changes, production validation and diagnostics, and an open-source retrieval platform built with Python and FastAPI.
 contactIntroduction: I'm open to backend and platform engineering conversations. The quickest ways to reach me are email or LinkedIn.
-availabilityNote: I'm targeting backend and platform engineering roles in Berlin.
+availabilityNote: I'm targeting backend and platform engineering roles.
+proofPoints:
+  - value: 5+ years
+    label: Building production systems at Amazon
+  - value: Java + Python
+    label: Backend services, developer tools, and APIs
+  - value: 100+ endpoints
+    label: In a diagnostic API platform I owned
+  - value: 8+ teams
+    label: Unblocked by centralized fleet-test telemetry
 publicLinks:
   - label: GitHub
     url: https://github.com/JonathanGWesterfield
@@ -35,5 +44,5 @@ experience:
     timeframe: June 2020–May 2021
     summary: Improved security, monitoring, and production change-management tooling.
 approvalStatus: approved
-lastReviewed: 2026-10-23
+lastReviewed: 2026-11-03
 ---

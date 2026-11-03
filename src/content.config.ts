@@ -16,6 +16,11 @@ const experienceSnapshot = z.object({
   summary: z.string().min(1),
 });
 
+const proofPoint = z.object({
+  value: z.string().min(1),
+  label: z.string().min(1),
+});
+
 const site = defineCollection({
   loader: glob({
     base: "./src/content/site",
@@ -29,6 +34,7 @@ const site = defineCollection({
     resumeSummary: z.string().optional(),
     contactIntroduction: z.string().optional(),
     availabilityNote: z.string().optional(),
+    proofPoints: z.array(proofPoint).min(3).max(4).optional(),
     publicLinks: z.array(publicLink).default([]),
     resumeFile: z.string().optional(),
     experience: z.array(experienceSnapshot).min(2).max(4).optional(),
@@ -45,6 +51,7 @@ const work = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
+    impact: z.string(),
     role: z.string(),
     timeframe: z.string(),
     situation: z.string(),

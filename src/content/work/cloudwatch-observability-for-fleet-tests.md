@@ -1,6 +1,7 @@
 ---
 title: Making fleet tests observable with CloudWatch
 summary: Replaced crash-prone local test logs with centralized CloudWatch telemetry for fleet-wide accelerator hardware investigations.
+impact: Unblocked debugging for more than eight engineering teams and reduced cross-organizational investigation time to resolution by more than 90%.
 role: Software Development Engineer II, Amazon — Annapurna Labs
 timeframe: December 2022–July 2025
 situation: Hardware vetting tests could hang, time out, or crash a server without leaving useful evidence behind. Logs lived in local storage, so a restart could erase the record; retrieving what remained required manual SSH work and a specialized tool that did not scale to fleet investigations.
@@ -19,7 +20,7 @@ technologies:
   - Fleet testing
   - Failure investigation
 featured: true
-order: 3
+order: 1
 approvalStatus: approved
 confidentialityReview: true
 relevance: "Demonstrates practical observability work: preserving evidence, connecting systems through existing operational paths, and making complex failures easier for other engineers to diagnose."

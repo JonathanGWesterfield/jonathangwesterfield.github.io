@@ -8,7 +8,7 @@ import { isPublicWork } from "../../lib/work";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
-  if (release.status !== "public") {
+  if (import.meta.env.PROD && release.status !== "public") {
     return [];
   }
 
@@ -44,7 +44,7 @@ const {
 ---
 
 <BaseLayout title={title} description={summary}>
-  <SiteHeader slot="header" currentPath="/work/" />
+  <SiteHeader slot="header" />
   <article>
     <section class="page-intro">
       <div class="container narrow">
